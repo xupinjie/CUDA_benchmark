@@ -1,0 +1,32 @@
+int sgemm_plain(
+    int M,
+    int N,
+    int K,
+    int lda,
+    int ldb,
+    int ldc,
+    float *matA,
+    float *matB,
+    float *matC);
+
+int sgemm_tile_v1(
+    int M,
+    int N,
+    int K,
+    int lda,
+    int ldb,
+    int ldc,
+    float *matA,
+    float *matB,
+    float *matC);
+
+int sgemm_tile_v2(
+    int M,
+    int N,
+    int K,
+    int lda,
+    int ldb,
+    int ldc,
+    float *matA,
+    float *matB,
+    float *matC);
