@@ -124,7 +124,7 @@ static void reduce_sum_host(float *inData, int DSIZE, float &res)
     }
 }
 
-int reduce_main()
+int main()
 {
     const int warm   = 5;
     const int trials = 10;

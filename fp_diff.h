@@ -155,15 +155,15 @@ size_t fp_diff(const T *in0, const T *in1, const size_t &length, const float& ep
         cos_distance = 1.0 - (sum_ab / (sqrt(sum_a2) * sqrt(sum_b2)));
     }
 
-    std::cerr << "Number of values: " << length << std::endl;
-    std::cerr << "Number of equal values: " << length - err_val_cnt << std::endl;
-    std::cerr << "Number of not equal values: " << err_val_cnt << std::endl;
-    std::cerr << "COS simulate: " << 1-cos_distance << ", with SUM(ab)/N: " << sum_ab << ", SUM(a^2)/N:" << sum_a2 << ", SUM(b^2)/N: " << sum_b2 << std::endl;
+    // std::cerr << "Number of values: " << length << std::endl;
+    // std::cerr << "Number of equal values: " << length - err_val_cnt << std::endl;
+    // std::cerr << "Number of not equal values: " << err_val_cnt << std::endl;
+    // std::cerr << "COS simulate: " << 1-cos_distance << ", with SUM(ab)/N: " << sum_ab << ", SUM(a^2)/N:" << sum_a2 << ", SUM(b^2)/N: " << sum_b2 << std::endl;
 
-    if (min_abs_idx != (size_t)UINT64_MAX) std::cerr << "MIN abs error: " << min_abs_err << " --> " << min_abs_val0 << " vs. " << min_abs_val1 << ", at " << min_abs_idx << std::endl;
-    if (max_abs_idx != (size_t)UINT64_MAX) std::cerr << "MAX abs error: " << max_abs_err << " --> " << max_abs_val0 << " vs. " << max_abs_val1 << ", at " << max_abs_idx << std::endl;
-    if (min_rel_idx != (size_t)UINT64_MAX) std::cerr << "MIN rel error: " << min_rel_err << " --> " << min_rel_val0 << " vs. " << min_rel_val1 << ", at " << min_rel_idx << std::endl;
-    if (max_rel_idx != (size_t)UINT64_MAX) std::cerr << "MAX rel error: " << max_rel_err << " --> " << max_rel_val0 << " vs. " << max_rel_val1 << ", at " << max_rel_idx << std::endl;
+    // if (min_abs_idx != (size_t)UINT64_MAX) std::cerr << "MIN abs error: " << min_abs_err << " --> " << min_abs_val0 << " vs. " << min_abs_val1 << ", at " << min_abs_idx << std::endl;
+    // if (max_abs_idx != (size_t)UINT64_MAX) std::cerr << "MAX abs error: " << max_abs_err << " --> " << max_abs_val0 << " vs. " << max_abs_val1 << ", at " << max_abs_idx << std::endl;
+    // if (min_rel_idx != (size_t)UINT64_MAX) std::cerr << "MIN rel error: " << min_rel_err << " --> " << min_rel_val0 << " vs. " << min_rel_val1 << ", at " << min_rel_idx << std::endl;
+    // if (max_rel_idx != (size_t)UINT64_MAX) std::cerr << "MAX rel error: " << max_rel_err << " --> " << max_rel_val0 << " vs. " << max_rel_val1 << ", at " << max_rel_idx << std::endl;
 
     std::cerr << "Statistics of abs error" << std::endl;
     std::cerr << "(..., 1e-1f): " << abs_en1_cnt << std::endl;
@@ -173,13 +173,13 @@ size_t fp_diff(const T *in0, const T *in1, const size_t &length, const float& ep
     std::cerr << "(..., 1e-5f): " << abs_en5_cnt << std::endl;
     std::cerr << "(..., 1e-6f): " << abs_en6_cnt << std::endl;
 
-    std::cerr << "Statistics of rel error" << std::endl;
-    std::cerr << "(..., 1e-1f): " << rel_en1_cnt << std::endl;
-    std::cerr << "(..., 1e-2f): " << rel_en2_cnt << std::endl;
-    std::cerr << "(..., 1e-3f): " << rel_en3_cnt << std::endl;
-    std::cerr << "(..., 1e-4f): " << rel_en4_cnt << std::endl;
-    std::cerr << "(..., 1e-5f): " << rel_en5_cnt << std::endl;
-    std::cerr << "(..., 1e-6f): " << rel_en6_cnt << std::endl;
+    // std::cerr << "Statistics of rel error" << std::endl;
+    // std::cerr << "(..., 1e-1f): " << rel_en1_cnt << std::endl;
+    // std::cerr << "(..., 1e-2f): " << rel_en2_cnt << std::endl;
+    // std::cerr << "(..., 1e-3f): " << rel_en3_cnt << std::endl;
+    // std::cerr << "(..., 1e-4f): " << rel_en4_cnt << std::endl;
+    // std::cerr << "(..., 1e-5f): " << rel_en5_cnt << std::endl;
+    // std::cerr << "(..., 1e-6f): " << rel_en6_cnt << std::endl;
 
     if (std::isnan(cos_distance) || std::isinf(cos_distance)) {
         return err_val_cnt;

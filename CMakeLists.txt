@@ -1,45 +1,53 @@
 cmake_minimum_required(VERSION 3.10)
-
-# 设置策略 CMP0104
 if(POLICY CMP0104)
     cmake_policy(SET CMP0104 NEW)
 endif()
-# 设置 CUDA 架构（根据你的 GPU 进行设置）
-set(CMAKE_CUDA_ARCHITECTURES "61"  # 替换为适合你的架构
-)
 
 project(CUDAProject LANGUAGES CXX CUDA)
 
+set(CMAKE_CUDA_ARCHITECTURES "90")
+set(CMAKE_CXX_STANDARD 11)
+
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
+include_directories(${CMAKE_SOURCE_DIR}/kernels)
+include_directories(${CMAKE_SOURCE_DIR}/)
 
-# 启用CUDA
-# find_package(CUDA REQUIRED)
-
-# 添加CUDA和C++文件
-set(SOURCES
-    main.cpp
+set(COMMON_KERNELS
     tools/cuda_info.cu
-    sgemm_main.cu
-    sgemm_plain.cu
-    sgemm_tile_v1.cu
-    sgemm_tile_v2.cu
-    reduce_main.cu
+    kernels/sgemm_plain.cu
+    kernels/sgemm_tile_v1.cu
+    kernels/sgemm_tile_v2.cu
 )
 
-# 设置编译标准
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CUDA_STANDARD 11)
+# bandwidth kernel
+set(SOURCES_BANDWIDTH
+    tools/bandwidth.cu
+    ${COMMON_KERNELS}
+)
+add_executable(bandwidth ${SOURCES_BANDWIDTH})
+target_link_libraries(bandwidth ${CUDA_LIBRARIES})
+set_target_properties(bandwidth PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+)
 
+# reduce kernel
+set(SOURCES_REDUCE
+    kernels/reduce_main.cu
+    ${COMMON_KERNELS}
+)
+add_executable(reduce ${SOURCES_REDUCE})
+target_link_libraries(reduce ${CUDA_LIBRARIES})
+set_target_properties(reduce PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+)
 
-
-#添加头文件
-include_directories(${CMAKE_SOURCE_DIR})
-
-# 添加可执行文件
-add_executable(test_cuda_kernel ${SOURCES})
-# 链接CUDA库（如果需要）
-target_link_libraries(test_cuda_kernel ${CUDA_LIBRARIES})
-# 指定CUDA的编译选项
-set_target_properties(test_cuda_kernel PROPERTIES
+# gemm kernel
+set(SOURCES_GEMM
+    kernels/sgemm_main.cu
+    ${COMMON_KERNELS}
+)
+add_executable(gemm ${SOURCES_GEMM})
+target_link_libraries(gemm ${CUDA_LIBRARIES})
+set_target_properties(gemm PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
 )

@@ -4,4 +4,5 @@ cd build
 cmake ..
 make
 
-./test_cuda_kernel
+# ./gemm
+./bandwidth

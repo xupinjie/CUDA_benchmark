@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "cuda_kernel.h"
+#include "kernels/cuda_kernel.h"
 
 int main()
 {

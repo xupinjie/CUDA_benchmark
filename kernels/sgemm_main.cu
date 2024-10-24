@@ -30,7 +30,7 @@ static void sgemm_host(
     }
 }
 
-int sgemm_main()
+int main()
 {
     const int M = 1024;
     const int N = 1024;
