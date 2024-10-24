@@ -9,14 +9,12 @@ set(CMAKE_CUDA_ARCHITECTURES "90")
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
-include_directories(${CMAKE_SOURCE_DIR}/kernels)
-include_directories(${CMAKE_SOURCE_DIR}/)
 
+# common
+include_directories(${CMAKE_SOURCE_DIR}/)
+include_directories(${CMAKE_SOURCE_DIR}/common)
 set(COMMON_KERNELS
     tools/cuda_info.cu
-    kernels/sgemm_plain.cu
-    kernels/sgemm_tile_v1.cu
-    kernels/sgemm_tile_v2.cu
 )
 
 # bandwidth kernel
@@ -31,8 +29,9 @@ set_target_properties(bandwidth PROPERTIES
 )
 
 # reduce kernel
+include_directories(${CMAKE_SOURCE_DIR}/reduce)
 set(SOURCES_REDUCE
-    kernels/reduce_main.cu
+    reduce/reduce_main.cu
     ${COMMON_KERNELS}
 )
 add_executable(reduce ${SOURCES_REDUCE})
@@ -41,13 +40,17 @@ set_target_properties(reduce PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
 )
 
-# gemm kernel
+# sgemm kernel
+include_directories(${CMAKE_SOURCE_DIR}/sgemm)
 set(SOURCES_GEMM
-    kernels/sgemm_main.cu
+    sgemm/sgemm_main.cu
+    sgemm/sgemm_plain.cu
+    sgemm/sgemm_tile_v1.cu
+    sgemm/sgemm_tile_v2.cu
     ${COMMON_KERNELS}
 )
-add_executable(gemm ${SOURCES_GEMM})
-target_link_libraries(gemm ${CUDA_LIBRARIES})
-set_target_properties(gemm PROPERTIES
+add_executable(sgemm ${SOURCES_GEMM})
+target_link_libraries(sgemm ${CUDA_LIBRARIES})
+set_target_properties(sgemm PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
 )
