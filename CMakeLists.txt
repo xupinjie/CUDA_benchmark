@@ -31,7 +31,8 @@ set_target_properties(bandwidth PROPERTIES
 # reduce kernel
 include_directories(${CMAKE_SOURCE_DIR}/reduce)
 set(SOURCES_REDUCE
-    reduce/reduce_main.cu
+    # reduce/reduce_main.cu
+    reduce/reduce_main_v2.cu
     ${COMMON_KERNELS}
 )
 add_executable(reduce ${SOURCES_REDUCE})

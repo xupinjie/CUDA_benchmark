@@ -5,4 +5,4 @@ cmake ..
 make
 
 # ./gemm
-./bandwidth
+./reduce
