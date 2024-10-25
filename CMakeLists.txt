@@ -5,7 +5,8 @@ endif()
 
 project(CUDAProject LANGUAGES CXX CUDA)
 
-set(CMAKE_CUDA_ARCHITECTURES "90")
+# set(CMAKE_CUDA_ARCHITECTURES "90")
+set(CMAKE_CUDA_ARCHITECTURES "61")
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
@@ -53,5 +54,17 @@ set(SOURCES_GEMM
 add_executable(sgemm ${SOURCES_GEMM})
 target_link_libraries(sgemm ${CUDA_LIBRARIES})
 set_target_properties(sgemm PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+)
+
+# transpose kernel
+include_directories(${CMAKE_SOURCE_DIR}/transpose)
+set(SOURCES_TRANSPOSE
+    transpose/transpose_main.cu
+    ${COMMON_KERNELS}
+)
+add_executable(transpose ${SOURCES_TRANSPOSE})
+target_link_libraries(transpose ${CUDA_LIBRARIES})
+set_target_properties(transpose PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
 )

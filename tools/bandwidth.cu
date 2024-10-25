@@ -1,7 +1,8 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
 
-#define N (1024 * 1024 * 500)  // 128MB 数据大小
+// #define N (1024 * 1024 * 128)
+#define N (6400 * 6400)
 
 __global__ void bandwidthTest(float *d_a, float *d_b, int n) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;

@@ -4,5 +4,7 @@ cd build
 cmake ..
 make
 
+./bandwidth
 # ./gemm
-./reduce
+# ./reduce
+# ./transpose
