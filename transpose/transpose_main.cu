@@ -6,28 +6,47 @@
 
 template<typename T, int BLOCK_SIZE>
 __global__ void transpose(
-    const T *src,
+    const T* src,
     int height,
     int width,
-    T *dst)
+    T* dst)
 {
-    int tidx = threadIdx.x;
-    int tidy = threadIdx.y;
-    
-    int x = blockIdx.x * BLOCK_SIZE + threadIdx.x;
-    int y = blockIdx.y * BLOCK_SIZE + threadIdx.y;
-
-    if (x >= width || y >= height) return;
+    const int srcx = blockIdx.x * BLOCK_SIZE + threadIdx.x;
+    const int srcy = blockIdx.y * BLOCK_SIZE + threadIdx.y;
 
     __shared__ T smem[BLOCK_SIZE][BLOCK_SIZE+1];
-
-    smem[tidy][tidx] = src[y * width + x];
+    smem[threadIdx.y][threadIdx.x] = src[srcy * width + srcx];
     __syncthreads();
-    
-    x = blockIdx.y * BLOCK_SIZE + threadIdx.x;
-    y = blockIdx.x * BLOCK_SIZE + threadIdx.y;
-    dst[y * height + x] = smem[tidx][tidy];
+
+    const int dstx = blockIdx.y * BLOCK_SIZE + threadIdx.x;
+    const int dsty = blockIdx.x * BLOCK_SIZE + threadIdx.y;
+    dst[dsty * height + dstx] = smem[threadIdx.x][threadIdx.y];
 }
+
+// template<typename T, int BLOCK_SIZE>
+// __global__ void transpose(
+//     const T *src,
+//     int height,
+//     int width,
+//     T *dst)
+// {
+//     int tidx = threadIdx.x;
+//     int tidy = threadIdx.y;
+    
+//     int x = blockIdx.x * BLOCK_SIZE + threadIdx.x;
+//     int y = blockIdx.y * BLOCK_SIZE + threadIdx.y;
+
+//     if (x >= width || y >= height) return;
+
+//     __shared__ T smem[BLOCK_SIZE][BLOCK_SIZE+1];
+
+//     smem[tidy][tidx] = src[y * width + x];
+//     __syncthreads();
+    
+//     x = blockIdx.y * BLOCK_SIZE + threadIdx.x;
+//     y = blockIdx.x * BLOCK_SIZE + threadIdx.y;
+//     dst[y * height + x] = smem[tidx][tidy];
+// }
 
 // template<typename T, int BLOCK_SIZE>
 // __global__ void transpose(float* input, int height, int width, float* output) {

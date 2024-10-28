@@ -4,7 +4,8 @@ cd build
 cmake ..
 make
 
-./bandwidth
+# ./bandwidth
 # ./gemm
 # ./reduce
 # ./transpose
+./softmax

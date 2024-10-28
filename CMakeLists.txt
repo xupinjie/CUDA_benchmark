@@ -68,3 +68,15 @@ target_link_libraries(transpose ${CUDA_LIBRARIES})
 set_target_properties(transpose PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
 )
+
+# softmax kernel
+include_directories(${CMAKE_SOURCE_DIR}/softmax)
+set(SOURCES_SOFTMAX
+    softmax/softmax_main.cu
+    ${COMMON_KERNELS}
+)
+add_executable(softmax ${SOURCES_SOFTMAX})
+target_link_libraries(softmax ${CUDA_LIBRARIES})
+set_target_properties(softmax PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+)
