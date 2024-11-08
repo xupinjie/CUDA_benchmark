@@ -15,23 +15,23 @@ static inline void kahan_step(const double& in, double *sum, double *c) {
 
 template<typename T>
 size_t fp_diff(const T *in0, const T *in1, const size_t &length, const float& eps_abs, const float& eps_rel, const float& eps_cos) {
-    size_t min_abs_idx = (size_t)UINT64_MAX;
-    size_t max_abs_idx = (size_t)UINT64_MAX;
+    // size_t min_abs_idx = (size_t)UINT64_MAX;
+    // size_t max_abs_idx = (size_t)UINT64_MAX;
     float min_abs_err = FLT_MAX;
     float max_abs_err = -FLT_MAX;
-    float min_abs_val0;
-    float max_abs_val0;
-    float min_abs_val1;
-    float max_abs_val1;
+    // float min_abs_val0;
+    // float max_abs_val0;
+    // float min_abs_val1;
+    // float max_abs_val1;
 
-    size_t min_rel_idx = (size_t)UINT64_MAX;
-    size_t max_rel_idx = (size_t)UINT64_MAX;
+    // size_t min_rel_idx = (size_t)UINT64_MAX;
+    // size_t max_rel_idx = (size_t)UINT64_MAX;
     float min_rel_err = FLT_MAX;
     float max_rel_err = -FLT_MAX;
-    float min_rel_val0;
-    float max_rel_val0;
-    float min_rel_val1;
-    float max_rel_val1;
+    // float min_rel_val0;
+    // float max_rel_val0;
+    // float min_rel_val1;
+    // float max_rel_val1;
 
     size_t abs_en1_cnt = 0;
     size_t abs_en2_cnt = 0;
@@ -121,28 +121,28 @@ size_t fp_diff(const T *in0, const T *in1, const size_t &length, const float& ep
             ++err_val_cnt;
         }
         if (abs_err > max_abs_err) {
-            max_abs_idx = i;
+            // max_abs_idx = i;
             max_abs_err = abs_err;
-            max_abs_val0 = val0;
-            max_abs_val1 = val1;
+            // max_abs_val0 = val0;
+            // max_abs_val1 = val1;
         }
         if (rel_err > max_rel_err) {
-            max_rel_idx = i;
+            // max_rel_idx = i;
             max_rel_err = rel_err;
-            max_rel_val0 = val0;
-            max_rel_val1 = val1;
+            // max_rel_val0 = val0;
+            // max_rel_val1 = val1;
         }
         if (abs_err < min_abs_err) {
-            min_abs_idx = i;
+            // min_abs_idx = i;
             min_abs_err = abs_err;
-            min_abs_val0 = val0;
-            min_abs_val1 = val1;
+            // min_abs_val0 = val0;
+            // min_abs_val1 = val1;
         }
         if (rel_err < min_rel_err) {
-            min_rel_idx = i;
+            // min_rel_idx = i;
             min_rel_err = rel_err;
-            min_rel_val0 = val0;
-            min_rel_val1 = val1;
+            // min_rel_val0 = val0;
+            // min_rel_val1 = val1;
         }
     }
 

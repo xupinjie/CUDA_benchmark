@@ -5,7 +5,7 @@ cmake ..
 make
 
 # ./bandwidth
-# ./gemm
+./sgemm
 # ./reduce
 # ./transpose
-./softmax
+# ./softmax
