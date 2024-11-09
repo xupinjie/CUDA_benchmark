@@ -32,9 +32,14 @@ static void sgemm_host(
 
 int main()
 {
-    const int M = 1024;
-    const int N = 1024;
-    const int K = 1024;
+    #define WIDTH 4096
+    // const int M = 4096;
+    // const int N = 8192;
+    // const int K = 4096;
+    const int M = WIDTH;
+    const int N = WIDTH;
+    const int K = WIDTH;
+    // #define CHECK
     const int lda = K;
     const int ldb = N;
     const int ldc = N;
@@ -51,7 +56,9 @@ int main()
     valueSet2D(matC, M, N, ldc, -1.);
     valueSet2D(refC, M, N, ldc, -1.);
 
+    #ifdef CHECK
     sgemm_host(M, N, K, lda, ldb, ldc, matA, matB, refC);
+    #endif
 
     float *matA_device, *matB_device, *matC_device;
     cudaMalloc(&matA_device, M * lda * sizeof(float));
@@ -65,19 +72,19 @@ int main()
     GEMM_KERNEL(M, N, K, lda, ldb, ldc, matA_device, matB_device, matC_device);
     cudaMemcpy(matC, matC_device, M * ldc * sizeof(float), cudaMemcpyDeviceToHost);
     fp_diff(matC, refC, M * N, 1e-6, 1e-6, 0.999);
-    // int errno = 0;
-    // for (int i = 0; i < M; i++) {
-    //     for (int j = 0; j < N; j++) {
-    //         if (errno>10) break;
+    int errn = 0;
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            if (errn>10) break;
 
-    //         float res = matC[i*ldc+j];
-    //         float ref = refC[i*ldc+j];
-    //         if (abs(res-ref) > 1e-4) {
-    //             printf("[%d,%d] %f vs. %f\n", i, j, res, ref);
-    //             errno++;
-    //         }
-    //     }
-    // }
+            float res = matC[i*ldc+j];
+            float ref = refC[i*ldc+j];
+            if (abs(res-ref) > 1e-4) {
+                printf("[%d,%d] %f vs. %f\n", i, j, res, ref);
+                errn++;
+            }
+        }
+    }
 
     // profiling
     const int warmup = 5;
