@@ -56,9 +56,9 @@ __global__ void sgemm_tile_v2_smem_kernel2(
     int lda,
     int ldb,
     int ldc,
-    float *matA,
-    float *matB,
-    float *matC)
+    const float * __restrict__ matA,
+    const float * __restrict__ matB,
+    float * __restrict__ matC)
 {
     const int tidx = threadIdx.x;
     const int tidy = threadIdx.y;

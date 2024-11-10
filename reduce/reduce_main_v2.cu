@@ -5,17 +5,17 @@
 
 template<typename T, int BLOCK_SIZE, int WARP_SIZE>
 __global__ void reduce_shuffle(
-        const T* src,
-        int len,
-        T *dst)
+    const T* __restrict__ src,
+    int len,
+    T* __restrict__ dst)
 {
     const int tid = threadIdx.x;
     const int bid = blockIdx.x;
     const int lid = threadIdx.x % WARP_SIZE;
     const int wid = threadIdx.x / WARP_SIZE;
     const int warp_num = BLOCK_SIZE / WARP_SIZE;
-
-    int idx = bid * BLOCK_SIZE + tid;
+    
+    const int idx = bid * BLOCK_SIZE + tid;
     T sum = idx < len ? src[idx] : (T)0;
     sum += __shfl_down_sync(0xffffffff, sum, 16);
     sum += __shfl_down_sync(0xffffffff, sum, 8);
@@ -30,13 +30,13 @@ __global__ void reduce_shuffle(
     sum = (T)0;
     if (tid < warp_num) {
         sum = smem[tid];
-        sum += __shfl_down_sync(0xffffffff, sum, 16);
-        sum += __shfl_down_sync(0xffffffff, sum, 8);
-        sum += __shfl_down_sync(0xffffffff, sum, 4);
-        sum += __shfl_down_sync(0xffffffff, sum, 2);
-        sum += __shfl_down_sync(0xffffffff, sum, 1);
+        if (warp_num >= 32) sum += __shfl_down_sync(0xffffffff, sum, 16);
+        if (warp_num >= 16) sum += __shfl_down_sync(0xffffffff, sum, 8);
+        if (warp_num >= 8)  sum += __shfl_down_sync(0xffffffff, sum, 4);
+        if (warp_num >= 4)  sum += __shfl_down_sync(0xffffffff, sum, 2);
+        if (warp_num >= 2)  sum += __shfl_down_sync(0xffffffff, sum, 1);
     }
-
+    
     if (tid == 0) dst[bid] = sum;
 }
 
